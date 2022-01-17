@@ -1,0 +1,21 @@
+SELECT DISTINCT
+	MCC.FT_MCC AS "MCC Code"
+	, MCC.FT_MCC_DESCRIPTION AS "MCC Description"
+	, MCC.DESCL3 AS "LOBA Region"
+	, CASE WHEN MCC.DESCL4 IN ('Korea Branch') THEN 'Korea'
+		WHEN MCC.DESCL4 IN ('LA_FAC') THEN 'Latin America Facultative Re'
+		WHEN MCC.FT_MCC IN ('3530501') THEN 'Malaysia Jerneh Insurance'
+		WHEN MCC.FT_MCC IN ('3570301') THEN 'Samaggi Insurance Thailand'
+		WHEN MCC.FT_MCC IN ('3300211', '3300212', '3300213') THEN 'Sweden'
+		ELSE MCC.DESCL4 END AS "Country"
+	, CASE WHEN MCC.DESCL4 IN ('China', 'Hong Kong', 'Indonesia', 'Korea Branch', 'Korea', 'Macau', 'Malaysia', 'Philippines', 'Thailand', 'Singapore', 'Taiwan', 'Vietnam') THEN 'Asia'
+		WHEN MCC.DESCL4 IN ('Australia', 'New Zealand') THEN 'ANZ'
+		WHEN MCC.DESCL4 IN ('Bahrain', 'Pakistan', 'Russia', 'Tunisia', 'Turkey', 'UAE', 'Austria', 'Belgium', 'Czech Republic', 'Denmark', 'Finland', 'France', 'Germany', 'Hungary', 'Italy', 'Netherlands', 'Norway', 'Poland', 'Portugal', 'Spain', 'Sweden', 'Switzerland') THEN 'CE MENA'
+		WHEN MCC.DESCL4 IN ('Japan') THEN 'Far East'
+		WHEN MCC.DESCL4 IN ('Argentina', 'ArgentinaRe', 'Brazil', 'Chile', 'Colombia', 'Ecuador', 'LA_FAC', 'Mexico', 'Panama', 'Peru', 'Puerto Rico', 'Latin America Facultative Re') THEN 'LATAM'
+		WHEN MCC.DESCL4 IN ('South Africa', 'Gibraltar', 'Ireland', 'UK') THEN 'UKI SA'
+		ELSE MCC.DESCL4 END AS "REGION"
+FROM 
+	DB_P_DM_PCW.DB_P_DM_PCW_OWNER.DIM_MCC_COUNTRY AS MCC
+WHERE
+	MCC.DESCL4 NOT IN ('ALL_OTHER_MCC', 'AGM', 'AIOIC_RE_OTHER', 'ATRE', 'Canada', 'Guam', 'TEMP_INTL_RE', 'China Other', 'CIOIC_GT_OTHER')	
